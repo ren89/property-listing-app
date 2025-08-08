@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { login, logout, signup } from "@/app/actions";
+import { createUser, getUserById } from "@/app/actions/users";
 import type { User } from "@supabase/supabase-js";
 
 export interface UseAuthReturn {
@@ -61,7 +62,28 @@ export function useAuth(): UseAuthReturn {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Create user profile after successful authentication (only if it doesn't exist)
+      if (event === "SIGNED_IN" && session?.user) {
+        try {
+          // Check if user profile already exists
+          const existingUser = await getUserById(session.user.id);
+          // Only create profile if it doesn't exist
+          if (!existingUser) {
+            const userData = session.user.user_metadata;
+            await createUser({
+              id: session.user.id,
+              email: session.user.email!,
+              role: "user",
+              name:
+                userData?.full_name || userData?.name || session.user.email!,
+            });
+          }
+        } catch (error) {
+          console.log("Error handling user profile:", error);
+        }
+      }
+
       setUser(session?.user ?? null);
       setLoading(false);
     });
