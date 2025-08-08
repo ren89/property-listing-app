@@ -2,14 +2,17 @@ import React from "react"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
+
 } from "@/components/ui/dialog"
 
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
   title?: string
+  description?: string
   children: React.ReactNode
   className?: string
   showCloseButton?: boolean
@@ -19,6 +22,7 @@ export default function Modal({
   isOpen,
   onClose,
   title,
+  description,
   children,
   className,
   showCloseButton = true,
@@ -32,6 +36,7 @@ export default function Modal({
         {title && (
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
+            {description && <DialogDescription>{description}</DialogDescription>}
           </DialogHeader>
         )}
         {children}
