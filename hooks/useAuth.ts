@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { login, logout } from "@/app/actions";
+import { login, logout, signup } from "@/app/actions";
 import type { User } from "@supabase/supabase-js";
 
 export interface UseAuthReturn {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -21,6 +22,19 @@ export function useAuth(): UseAuthReturn {
       await login(email, password);
     } catch (error) {
       console.error("Login failed:", error);
+      throw error;
+    }
+  };
+
+  const handleSignup = async (
+    name: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      await signup(name, email, password);
+    } catch (error) {
+      console.error("Signup failed:", error);
       throw error;
     }
   };
@@ -53,13 +67,14 @@ export function useAuth(): UseAuthReturn {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth, handleLogin, handleLogout]);
-  // EXPLAIN: handleLogin and handleLogout are wrapped in useEffect to instantly update isAuthenticated
+  }, [supabase.auth, handleLogin, handleSignup, handleLogout]);
+  // NOTES: handleLogin, handleSignup and handleLogout are wrapped in useEffect to instantly update isAuthenticated
 
   return {
     user,
     loading,
     login: handleLogin,
+    signup: handleSignup,
     logout: handleLogout,
     isAuthenticated: !!user,
   };

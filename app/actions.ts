@@ -21,7 +21,28 @@ export async function login(email: string, password: string) {
   return { success: true };
 }
 
-export async function signup(formData: FormData) {
+export async function signup(name: string, email: string, password: string) {
+  const supabase = await createClient();
+  // NOTES: confirm email is disabled in Supabase settings for ease of testing
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: name,
+      },
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message || "Signup failed");
+  }
+
+  revalidatePath("/", "layout");
+  return { success: true };
+}
+
+export async function signupWithFormData(formData: FormData) {
   const supabase = await createClient();
 
   const data = {

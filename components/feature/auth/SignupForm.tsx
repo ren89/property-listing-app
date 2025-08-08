@@ -2,24 +2,31 @@
 
 import React, { useState } from "react";
 import { Input, Button } from "@/components/shared";
-import { validateLoginForm } from "@/utils/validation";
+import { validateSignupForm } from "@/utils/validation";
 
-interface LoginFormProps {
-  onSubmit?: (email: string, password: string) => Promise<void> | void;
+interface SignupFormProps {
+  onSubmit?: (
+    name: string,
+    email: string,
+    password: string
+  ) => Promise<void> | void;
   className?: string;
   showTitle?: boolean;
 }
 
-export default function LoginForm({ onSubmit, className }: LoginFormProps) {
+export default function SignupForm({ onSubmit, className }: SignupFormProps) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {}
-  );
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+  }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
-    const validation = validateLoginForm(email, password);
+    const validation = validateSignupForm(name, email, password);
     setErrors(validation.errors);
     return validation.isValid;
   };
@@ -36,11 +43,11 @@ export default function LoginForm({ onSubmit, className }: LoginFormProps) {
 
     try {
       if (onSubmit) {
-        await onSubmit(email, password);
+        await onSubmit(name, email, password);
       }
     } catch (error) {
       setErrors({
-        email: error instanceof Error ? error.message : "Login failed",
+        email: error instanceof Error ? error.message : "Signup failed",
       });
     } finally {
       setIsLoading(false);
@@ -50,6 +57,16 @@ export default function LoginForm({ onSubmit, className }: LoginFormProps) {
   return (
     <div className={className || ""}>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          name="name"
+          label="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          error={errors.name}
+          placeholder="Enter your full name"
+          required
+        />
+
         <Input
           name="email"
           label="Email"
@@ -75,9 +92,9 @@ export default function LoginForm({ onSubmit, className }: LoginFormProps) {
           type="submit"
           className="w-full"
           loading={isLoading}
-          loadingText="Signing in..."
+          loadingText="Creating account..."
         >
-          Sign In
+          Create Account
         </Button>
       </form>
     </div>
