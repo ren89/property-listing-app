@@ -32,7 +32,6 @@ export async function createUser(
         id: userData.id,
         email: userData.email,
         name: userData.name,
-        role: userData.role,
         avatar_url: userData.avatar_url,
         created_at: new Date().toISOString(),
       },

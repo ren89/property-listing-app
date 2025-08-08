@@ -74,7 +74,6 @@ export function useAuth(): UseAuthReturn {
             await createUser({
               id: session.user.id,
               email: session.user.email!,
-              role: "user",
               name:
                 userData?.full_name || userData?.name || session.user.email!,
             });
