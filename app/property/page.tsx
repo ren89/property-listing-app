@@ -7,9 +7,11 @@ import {
   PropertyStatus,
 } from "@/types/property";
 import { usePropertyListings } from "@/hooks/usePropertyListings";
-import PropertyCard from "@/components/feature/property/PropertyCard";
-import PropertyFilters from "@/components/feature/property/PropertyFilters";
-import { PropertyGridSkeleton } from "@/components/feature/property/PropertySkeleton";
+import {
+  PropertyCard,
+  PropertyFilters,
+  PropertyGridSkeleton,
+} from "@/components/feature/property";
 import { Button } from "@/components/ui/button";
 import { Home, Filter } from "lucide-react";
 import { toast } from "sonner";

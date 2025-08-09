@@ -22,7 +22,7 @@ interface PropertyFiltersProps {
   };
 }
 
-export default function PropertyFilters({
+export function PropertyFilters({
   onFilterChange,
   filters,
 }: PropertyFiltersProps) {

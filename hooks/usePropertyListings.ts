@@ -8,32 +8,64 @@ export function usePropertyListings() {
   const [properties, setProperties] = useState<PropertyListing[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProperties() {
-      try {
-        const supabase = createClient();
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+      const supabase = createClient();
 
-        const { data, error } = await supabase
-          .from("property_listings")
-          .select("*")
-          .order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("property_listings")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-        if (error) {
-          console.error("Error fetching properties:", error);
-        } else {
-          setProperties(data || []);
-        }
-      } catch (err) {
-        console.error("Error fetching properties:", err);
-      } finally {
-        setLoading(false);
+      if (error) {
+        console.error("Error fetching properties:", error);
+      } else {
+        setProperties(data || []);
       }
+    } catch (err) {
+      console.error("Error fetching properties:", err);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchProperties();
   }, []);
 
-  return { properties, loading };
+  const refetch = () => {
+    fetchProperties();
+  };
+
+  // Optimistic update functions for better UX
+  const addPropertyOptimistically = (property: PropertyListing) => {
+    setProperties((prev) => [property, ...prev]);
+  };
+
+  const updatePropertyOptimistically = (
+    id: string,
+    updatedProperty: Partial<PropertyListing>
+  ) => {
+    setProperties((prev) =>
+      prev.map((prop) =>
+        prop.id === id ? { ...prop, ...updatedProperty } : prop
+      )
+    );
+  };
+
+  const removePropertyOptimistically = (id: string) => {
+    setProperties((prev) => prev.filter((prop) => prop.id !== id));
+  };
+
+  return {
+    properties,
+    loading,
+    refetch,
+    addPropertyOptimistically,
+    updatePropertyOptimistically,
+    removePropertyOptimistically,
+  };
 }
 
 export async function getPropertyById(

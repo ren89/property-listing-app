@@ -12,7 +12,7 @@ interface PropertyCardProps {
   onClick?: () => void;
 }
 
-export default function PropertyCard({ property, onClick }: PropertyCardProps) {
+export function PropertyCard({ property, onClick }: PropertyCardProps) {
   const getTypeIcon = (type: PropertyType) => {
     switch (type) {
       case PropertyType.House:
