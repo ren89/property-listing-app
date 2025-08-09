@@ -12,4 +12,5 @@ export { default as LoginForm } from "../feature/auth/LoginForm";
 export { default as PriceBadge } from "./PriceBadge";
 export { default as StatusBadge } from "./StatusBadge";
 export { default as ImageCarousel } from "./ImageCarousel";
+export { default as ImageUpload } from "./ImageUpload";
 export { ConfirmDialog } from "./ConfirmDialog";

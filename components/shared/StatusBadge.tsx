@@ -11,19 +11,19 @@ export default function StatusBadge({
   const getStatusColor = (status: PropertyStatus) => {
     switch (status) {
       case PropertyStatus.ForRent:
-        return "bg-green-500/10 text-green-700 dark:text-green-400";
+        return "bg-green-600 text-white shadow-md";
       case PropertyStatus.ForSale:
-        return "bg-blue-500/10 text-blue-700 dark:text-blue-400";
+        return "bg-blue-600 text-white shadow-md";
       default:
-        return "bg-gray-500/10 text-gray-700 dark:text-gray-400";
+        return "bg-gray-600 text-white shadow-md";
     }
   };
 
   return (
     <Badge
-      className={`border-0 font-bold backdrop-blur-sm ${getStatusColor(
-        status
-      )} ${className || ""}`}
+      className={`border-0 font-medium ${getStatusColor(status)} ${
+        className || ""
+      }`}
     >
       {status}
     </Badge>

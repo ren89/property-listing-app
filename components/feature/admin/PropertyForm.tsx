@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Select } from "@/components/shared";
+import { Button, Input, Select, ImageUpload } from "@/components/shared";
 import { PropertyType, PropertyStatus } from "@/types/property";
 import { PropertyFormData } from "@/types/forms";
 import { Label } from "@/components/ui/label";
@@ -99,6 +99,14 @@ export function PropertyForm({
           value: status,
           label: status === PropertyStatus.ForRent ? "For Rent" : "For Sale",
         }))}
+      />
+
+      <ImageUpload
+        images={formData.image}
+        onChange={(images) => setFormData({ ...formData, image: images })}
+        label="Property Images"
+        maxImages={5}
+        required
       />
 
       <div className="flex gap-2 justify-end pt-4">

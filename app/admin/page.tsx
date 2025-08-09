@@ -43,6 +43,7 @@ export default function AdminPage() {
     price: "",
     property_type: PropertyType.Apartment,
     status: PropertyStatus.ForRent,
+    image: [],
   });
 
   // Form helpers
@@ -54,6 +55,7 @@ export default function AdminPage() {
       price: "",
       property_type: PropertyType.Apartment,
       status: PropertyStatus.ForRent,
+      image: [],
     });
   };
 
@@ -65,6 +67,7 @@ export default function AdminPage() {
       price: property.price.toString(),
       property_type: property.property_type,
       status: property.status,
+      image: property.image || [],
     });
   };
 
@@ -113,6 +116,7 @@ export default function AdminPage() {
       const { data, error } = await createPropertyListing({
         ...formData,
         price: parseFloat(formData.price),
+        image: formData.image,
       });
 
       if (error) {
@@ -146,6 +150,7 @@ export default function AdminPage() {
       const updatedData = {
         ...formData,
         price: parseFloat(formData.price),
+        image: formData.image,
       };
 
       const { error } = await updatePropertyListing(

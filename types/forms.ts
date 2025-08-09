@@ -7,4 +7,5 @@ export interface PropertyFormData {
   price: string;
   property_type: PropertyType;
   status: PropertyStatus;
+  image: string[];
 }
