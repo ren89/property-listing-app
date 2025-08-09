@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
-import { createUser } from "./users";
 
 export async function login(email: string, password: string) {
   const supabase = await createClient();
@@ -55,5 +54,6 @@ export async function logout() {
   }
 
   revalidatePath("/", "layout");
+  redirect("/");
   return { success: true };
 }
