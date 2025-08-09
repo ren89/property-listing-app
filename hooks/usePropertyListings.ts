@@ -7,7 +7,6 @@ import type { PropertyListing } from "@/types/property";
 export function usePropertyListings() {
   const [properties, setProperties] = useState<PropertyListing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProperties() {
@@ -20,12 +19,12 @@ export function usePropertyListings() {
           .order("created_at", { ascending: false });
 
         if (error) {
-          setError(error.message);
+          console.error("Error fetching properties:", error);
         } else {
           setProperties(data || []);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        console.error("Error fetching properties:", err);
       } finally {
         setLoading(false);
       }
@@ -34,31 +33,7 @@ export function usePropertyListings() {
     fetchProperties();
   }, []);
 
-  const refetch = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const supabase = createClient();
-
-      const { data, error } = await supabase
-        .from("property_listings")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        setError(error.message);
-      } else {
-        setProperties(data || []);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { properties, loading, error, refetch };
+  return { properties, loading };
 }
 
 export async function getPropertyById(
