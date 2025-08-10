@@ -5,7 +5,6 @@ export { default as Modal } from "./Modal";
 export { default as Table } from "./Table";
 export { DataTable } from "./DataTable";
 export { default as Card } from "./Card";
-export { default as Header } from "./Header";
 export { default as Dropdown } from "./Dropdown";
 export { default as Avatar } from "./Avatar";
 export { default as LoginForm } from "../feature/auth/LoginForm";

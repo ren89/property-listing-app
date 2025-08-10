@@ -42,13 +42,20 @@ export default function Input({
           id={name}
           required={required}
           className={[
-            leftIcon && "pl-10",
-            rightIcon && "pr-10",
+            "w-full rounded-lg border px-5 py-7 text-base sm:text-lg", // large rounded look
+            "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", // better focus state
+            "transition-all duration-200", // smooth transitions
+            "placeholder:text-gray-400", // better placeholder style
+            "min-h-[48px] sm:min-h-[56px]", // mobile-friendly height
+            leftIcon && "pl-12", // space for left icon
+            rightIcon && "pr-12", // space for right icon
             error
-              ? "border-red-500 focus:border-red-500"
-              : "border-gray-300 focus:border-blue-500",
-            className
-          ].filter(Boolean).join(" ")}
+              ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+              : "border-gray-300",
+            className,
+          ]
+            .filter(Boolean)
+            .join(" ")}
           aria-invalid={error ? "true" : "false"}
           aria-describedby={error ? `${name}-error` : undefined}
           {...props}
