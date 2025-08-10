@@ -15,8 +15,6 @@ import {
   deletePropertyListing,
 } from "@/app/actions/properties";
 import { PropertyModal, AdminPropertyTable } from "@/components/feature/admin";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { NavigationDrawer } from "@/components/shared";
 

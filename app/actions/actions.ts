@@ -24,7 +24,7 @@ export async function login(email: string, password: string) {
 export async function signup(name: string, email: string, password: string) {
   const supabase = await createClient();
   // NOTES: confirm email is disabled in Supabase settings for ease of testing
-  const { data: authData, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {

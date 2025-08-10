@@ -15,8 +15,6 @@ import {
   PropertyDetailsSheet,
 } from "@/components/feature/property";
 import { Home, Search, Settings2 } from "lucide-react";
-import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button, Input, NavigationDrawer } from "@/components/shared";
 import {
   Popover,

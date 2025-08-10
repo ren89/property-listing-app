@@ -172,12 +172,6 @@ export default function ImageUpload({
                       className="object-cover group-hover:opacity-80 transition-opacity duration-200"
                       sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                       priority={index === 0}
-                      onError={(e) => {
-                        console.error("Image failed to load:", image);
-                      }}
-                      onLoadingComplete={() => {
-                        console.log("Image loaded successfully:", image);
-                      }}
                     />
                     <Button
                       type="button"
@@ -215,20 +209,6 @@ export default function ImageUpload({
                       fill
                       className="object-cover group-hover:opacity-80 transition-opacity duration-200"
                       sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                      unoptimized={true}
-                      onLoadingComplete={() => {
-                        console.log(
-                          `Preview loaded successfully: ${file.name}`
-                        );
-                        // Clean up the blob URL after image loads
-                        setTimeout(() => {
-                          URL.revokeObjectURL(previewUrl);
-                        }, 1000);
-                      }}
-                      onError={(e) => {
-                        console.error(`Preview failed to load: ${file.name}`);
-                        URL.revokeObjectURL(previewUrl);
-                      }}
                     />
                     <Button
                       type="button"

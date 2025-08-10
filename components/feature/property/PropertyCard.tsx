@@ -3,9 +3,8 @@
 import React from "react";
 import { PropertyListing, PropertyType } from "@/types/property";
 import { PriceBadge, StatusBadge, ImageCarousel } from "@/components/shared";
-import { MapPin, Home, Calendar, Building2, Warehouse } from "lucide-react";
+import { MapPin, Home, Building2, Warehouse } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { formatDate } from "@/utils/formatters";
 
 interface PropertyCardProps {
   property: PropertyListing;
