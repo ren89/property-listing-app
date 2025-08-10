@@ -1,36 +1,159 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Property Listing App
 
-## Getting Started
+A modern property listing application built with Next.js 15, React 19, and Supabase.
 
-First, run the development server:
+## 🚀 Features
 
+- User authentication (login/signup)
+- Property listings with images
+- Admin dashboard for property management
+- Role-based access (User/Admin)
+- Responsive design
+
+## 📋 Prerequisites
+
+- Node.js (v18 or higher)
+- npm, yarn, pnpm, or bun
+- Supabase account
+
+## Test Accounts
+
+You can use the following accounts to log in and explore the app:
+
+**Admin Account**
+- Email: `admin@gmail.com`
+- Password: `adminadmin`
+
+**User Account**
+- Email: `johnDoe@gmail.com`
+- Password: `johndoe`
+
+## 🔧 Setup
+
+### 1. Backend Setup (Supabase)
+
+1. Create a [Supabase](https://supabase.com) account and new project
+2. Wait for project setup to complete
+3. Note your project URL and anon key from **Settings > API**
+4. Create a `users` table:
+   - `id` (UUID)
+   - `email` (text)
+   - `name` (text)
+   - `user_role` (enum: `Admin` | `User`)
+5. Create a `property_listings` table:
+   - `id` (UUID)
+   - `title` (text)
+   - `description` (text)
+   - `location` (text)
+   - `price` (text)
+   - `property_type` (enum: `House` | `Apartment` | `Commercial`)
+   - `status` (enum: `ForSale` | `ForRent`)
+   - `image` (text[])
+6. Create a function in the Supabase SQL Editor to attach the `user_role` from the `users` table to the JWT claims.
+DECLARE
+  user_role text;
+  claims jsonb;
+BEGIN
+  SELECT u.user_role INTO user_role FROM public.users u WHERE u.id = (event->>'user_id')::uuid;
+
+  IF user_role IS NULL THEN
+    user_role := 'null';
+  END IF;
+
+  claims := COALESCE(event->'claims', '{}'::jsonb);
+
+  claims := jsonb_set(claims, '{user_role}', to_jsonb(user_role));
+
+
+
+### 2. Frontend Setup
+
+1. **Clone and install dependencies:**
+   ```bash
+   git clone git@github.com:ren89/property-listing-app.git
+   cd property-listing-app
+   npm install
+   ```
+
+2. **Create environment file:**
+   Create `.env.local` in the root directory:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+
+## 🏃‍♂️ Running the Application
+
+### Development
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Other Commands
+```bash
+npm run lint          # Check for linting issues
+npm run lint:fix      # Fix linting issues
+npm run type-check    # TypeScript type checking
+```
 
-## Learn More
+## 📱 Application Structure
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend**: Next.js with React, TypeScript, and Tailwind CSS
+- **Backend**: Supabase (authentication, database, storage)
+- **UI Components**: Radix UI primitives with custom styling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔑 Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app uses Supabase authentication. Users can sign up and log in with email/password.
 
-## Deploy on Vercel
+## 👥 User Roles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **User**: Can view property listings
+- **Admin**: Can manage (create/edit/delete) properties
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **Note**: Role assignment and database schema setup will depend on your specific Supabase configuration.
+
+## 📂 Key Directories
+
+```
+├── app/                # Next.js App Router pages
+├── components/         # React components
+│   ├── feature/       # Feature-specific components
+│   ├── shared/        # Reusable components
+│   └── ui/            # Base UI components
+├── hooks/             # Custom React hooks
+├── types/             # TypeScript types
+└── utils/supabase/    # Supabase client configuration
+```
+
+## 🚀 Deployment
+
+Deploy to Vercel, Netlify, or any platform supporting Next.js:
+
+1. Push code to GitHub
+2. Connect to your deployment platform
+3. Add environment variables
+4. Deploy
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS, Shadcn
+- **Backend**: Supabase
+- **UI**: Radix UI, Lucide React icons
+- **State Management**: React hooks, React Table
+
+---
+
+For detailed documentation:
+- [Next.js Docs](https://nextjs.org/docs)
+- [Supabase Docs](https://supabase.com/docs)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
