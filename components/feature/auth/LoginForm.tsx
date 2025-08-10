@@ -8,9 +8,14 @@ interface LoginFormProps {
   onSubmit?: (email: string, password: string) => Promise<void> | void;
   className?: string;
   showTitle?: boolean;
+  onChangeFormMode: (mode: "login" | "signup") => void;
 }
 
-export default function LoginForm({ onSubmit, className }: LoginFormProps) {
+export default function LoginForm({
+  onSubmit,
+  className,
+  onChangeFormMode,
+}: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
@@ -70,6 +75,17 @@ export default function LoginForm({ onSubmit, className }: LoginFormProps) {
           placeholder="Enter your password"
           required
         />
+        <div className="text-center border-t pt-2">
+          <p className="text-sm text-gray-600">
+            Don&quot;t have an account?{" "}
+            <span
+              onClick={() => onChangeFormMode("signup")}
+              className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer focus:outline-none hover:underline"
+            >
+              Sign up here
+            </span>
+          </p>
+        </div>
 
         <Button
           type="submit"

@@ -39,27 +39,58 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Define protected routes that require authentication
-  const protectedRoutes = [
-    "/dashboard",
-    "/profile",
-    "/listings/create",
-    "/listings/edit",
-  ];
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
-  );
+  // Get user role from JWT claims
+  const { data } = await supabase.auth.getClaims();
+  const userRole = data?.claims.user_role;
 
-  if (
-    !user &&
-    isProtectedRoute &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    // Redirect to home page when user is not authenticated and tries to access protected routes
+  const pathname = request.nextUrl.pathname;
+
+  // Define route access rules
+  const routeAccess: Record<string, string[]> = {
+    "/": [],
+    "/property": ["User", "Admin"],
+    "/admin": ["Admin"],
+  };
+
+  // If user is authenticated and trying to access homepage, redirect to /property
+  if (user && pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/property";
+    return NextResponse.redirect(url);
+  }
+
+  // Check if current path needs authentication
+  const currentRoute =
+    Object.keys(routeAccess).find(
+      (route) => pathname.startsWith(route) && route !== "/"
+    ) || (pathname === "/" ? "/" : null);
+
+  // If page doesn't exist in our defined routes, redirect to home
+  if (!currentRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
+  }
+
+  if (currentRoute && routeAccess[currentRoute]) {
+    const allowedRoles = routeAccess[currentRoute];
+
+    // If route requires authentication and user is not authenticated
+    if (allowedRoles.length > 0 && !user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+
+    // If user is authenticated and route has role restrictions, check role-based access
+    if (user && allowedRoles.length > 0) {
+      if (!userRole || !allowedRoles.includes(userRole)) {
+        // Redirect unauthorized users to home page
+        const url = request.nextUrl.clone();
+        url.pathname = "/";
+        return NextResponse.redirect(url);
+      }
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
