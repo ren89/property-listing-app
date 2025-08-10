@@ -30,8 +30,15 @@ export function ConfirmDialog({
   onConfirm,
   isDestructive = false,
 }: ConfirmDialogProps) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleConfirm = () => {
+    onConfirm();
+    setOpen(false);
+  };
+
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -41,7 +48,7 @@ export function ConfirmDialog({
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
-            onClick={onConfirm}
+            onClick={handleConfirm}
             className={
               isDestructive
                 ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
