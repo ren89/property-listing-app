@@ -13,6 +13,7 @@ This documentation covers the existing operations in the Property Listing App us
 ## Setup
 
 ### Client-Side Setup (Browser)
+
 ```typescript
 import { createBrowserClient } from "@supabase/ssr";
 
@@ -28,6 +29,7 @@ const supabase = createClient();
 ```
 
 ### Server-Side Setup (Next.js)
+
 ```typescript
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -61,10 +63,11 @@ export async function createClient() {
 ## Authentication
 
 ### Sign Up
+
 ```typescript
 export async function signup(name: string, email: string, password: string) {
   const supabase = await createClient();
-  
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -84,6 +87,7 @@ export async function signup(name: string, email: string, password: string) {
 ```
 
 ### Sign In
+
 ```typescript
 export async function login(email: string, password: string) {
   const supabase = await createClient();
@@ -102,6 +106,7 @@ export async function login(email: string, password: string) {
 ```
 
 ### Sign Out
+
 ```typescript
 export async function logout() {
   const supabase = await createClient();
@@ -117,6 +122,7 @@ export async function logout() {
 ```
 
 ### Get Current User
+
 ```typescript
 export async function getCurrentUser() {
   const supabase = await createClient();
@@ -140,20 +146,22 @@ export async function getCurrentUser() {
 **Table Name:** `users`
 
 **Schema:**
+
 ```typescript
 interface User {
-  id: string;           // UUID, Primary Key
-  email: string;        // Email address
-  full_name: string;    // User's full name
-  avatar_url?: string;  // Profile picture URL (optional)
-  created_at: string;   // ISO timestamp
-  updated_at: string;   // ISO timestamp
+  id: string; // UUID, Primary Key
+  email: string; // Email address
+  full_name: string; // User's full name
+  avatar_url?: string; // Profile picture URL (optional)
+  created_at: string; // ISO timestamp
+  updated_at: string; // ISO timestamp
 }
 ```
 
 ### Read Operations
 
 #### Get User by ID
+
 ```typescript
 export async function getUserById(userId: string): Promise<User | null> {
   const supabase = await createClient();
@@ -174,17 +182,18 @@ export async function getUserById(userId: string): Promise<User | null> {
 ```
 
 **Parameters:**
+
 - `userId` (string): The unique identifier of the user
 
 **Response:**
+
 - Success: Returns `User` object or `null` if not found
 - Error: Returns `null` and logs error
-
-
 
 ### Create Operations
 
 #### Create User
+
 ```typescript
 interface CreateUserData {
   id: string;
@@ -193,7 +202,9 @@ interface CreateUserData {
   avatar_url?: string;
 }
 
-export async function createUser(userData: CreateUserData): Promise<User | null> {
+export async function createUser(
+  userData: CreateUserData
+): Promise<User | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -220,9 +231,11 @@ export async function createUser(userData: CreateUserData): Promise<User | null>
 ```
 
 **Parameters:**
+
 - `userData` (CreateUserData): User information object
 
 **Response:**
+
 - Success: Returns created `User` object
 - Error: Throws error with descriptive message
 
@@ -231,18 +244,19 @@ export async function createUser(userData: CreateUserData): Promise<User | null>
 **Table Name:** `property_listings`
 
 **Schema:**
+
 ```typescript
 interface PropertyListing {
-  id: string;                    // UUID, Primary Key
-  created_at: string;           // ISO timestamp
-  title: string;                // Property title
-  description: string;          // Property description
-  location: string;             // Property location
-  price: number;                // Property price
-  property_type: PropertyType;  // Enum: "Apartment" | "House" | "Commercial"
-  status: PropertyStatus;       // Enum: "ForRent" | "ForSale"
-  image?: string[] | null;      // Array of image URLs (optional)
-  updated_at: string;           // ISO timestamp
+  id: string; // UUID, Primary Key
+  created_at: string; // ISO timestamp
+  title: string; // Property title
+  description: string; // Property description
+  location: string; // Property location
+  price: number; // Property price
+  property_type: PropertyType; // Enum: "Apartment" | "House" | "Commercial"
+  status: PropertyStatus; // Enum: "ForRent" | "ForSale"
+  image?: string[] | null; // Array of image URLs (optional)
+  updated_at: string; // ISO timestamp
 }
 
 enum PropertyType {
@@ -260,6 +274,7 @@ enum PropertyStatus {
 ### Read Operations
 
 #### Get All Properties
+
 ```typescript
 export async function getProperties(): Promise<PropertyListing[]> {
   const supabase = createClient();
@@ -281,12 +296,16 @@ export async function getProperties(): Promise<PropertyListing[]> {
 **Parameters:** None
 
 **Response:**
+
 - Success: Returns array of `PropertyListing` objects
 - Error: Returns empty array and logs error
 
 #### Get Property by ID
+
 ```typescript
-export async function getPropertyById(id: string): Promise<PropertyListing | null> {
+export async function getPropertyById(
+  id: string
+): Promise<PropertyListing | null> {
   const supabase = createClient();
 
   const { data, error } = await supabase
@@ -305,17 +324,18 @@ export async function getPropertyById(id: string): Promise<PropertyListing | nul
 ```
 
 **Parameters:**
+
 - `id` (string): Property UUID
 
 **Response:**
+
 - Success: Returns `PropertyListing` object or `null`
 - Error: Returns `null` and logs error
-
-
 
 ### Create Operations
 
 #### Create Property Listing
+
 ```typescript
 interface CreatePropertyListingData {
   title: string;
@@ -362,9 +382,11 @@ export async function createPropertyListing(
 ```
 
 **Parameters:**
+
 - `data` (CreatePropertyListingData): Property information object
 
 **Response:**
+
 ```typescript
 {
   data: PropertyListing | null;
@@ -372,11 +394,10 @@ export async function createPropertyListing(
 }
 ```
 
-
-
 ### Update Operations
 
 #### Update Property Listing
+
 ```typescript
 interface UpdatePropertyListingData {
   title?: string;
@@ -425,10 +446,12 @@ export async function updatePropertyListing(
 ```
 
 **Parameters:**
+
 - `id` (string): Property UUID to update
 - `data` (UpdatePropertyListingData): Partial property data to update
 
 **Response:**
+
 ```typescript
 {
   data: PropertyListing | null;
@@ -439,6 +462,7 @@ export async function updatePropertyListing(
 ### Delete Operations
 
 #### Delete Property Listing
+
 ```typescript
 export async function deletePropertyListing(
   id: string
@@ -487,9 +511,11 @@ export async function deletePropertyListing(
 ```
 
 **Parameters:**
+
 - `id` (string): Property UUID to delete
 
 **Response:**
+
 ```typescript
 {
   success: boolean;
@@ -502,6 +528,7 @@ export async function deletePropertyListing(
 **Storage Bucket:** `pla-prod`
 
 ### Upload Property Images
+
 ```typescript
 export async function uploadPropertyImages(
   files: File[]
@@ -556,9 +583,11 @@ export async function uploadPropertyImages(
 ```
 
 **Parameters:**
+
 - `files` (File[]): Array of File objects to upload
 
 **Response:**
+
 ```typescript
 {
   urls: string[] | null;
@@ -567,11 +596,13 @@ export async function uploadPropertyImages(
 ```
 
 **File Constraints:**
+
 - Maximum file size: 5MB
 - Allowed types: Image files only (`image/*`)
 - Storage path: `properties/{timestamp}-{randomString}.{extension}`
 
 ### Delete Property Images
+
 ```typescript
 export async function deletePropertyImages(
   imageUrls: string[]
@@ -620,9 +651,11 @@ export async function deletePropertyImages(
 ```
 
 **Parameters:**
+
 - `imageUrls` (string[]): Array of image URLs to delete
 
 **Response:**
+
 ```typescript
 {
   success: boolean;
@@ -631,10 +664,11 @@ export async function deletePropertyImages(
 ```
 
 ### Get Public URL for File
+
 ```typescript
 export function getPublicUrl(filePath: string): string {
   const supabase = createClient();
-  
+
   const {
     data: { publicUrl },
   } = supabase.storage.from("pla-prod").getPublicUrl(filePath);
@@ -645,4 +679,4 @@ export function getPublicUrl(filePath: string): string {
 
 ---
 
-This documentation covers the core operations available in your Property Listing App using Supabase JavaScript client.
+This documentation covers the core operations available in your Property Listing App using Supabase JavaScript client
