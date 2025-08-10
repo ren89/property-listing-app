@@ -16,7 +16,6 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
-import Button from "@/components/shared/Button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -31,6 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "../ui/button";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];

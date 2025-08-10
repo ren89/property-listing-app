@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { login, logout, signup } from "@/app/actions";
 import { createUser, getUserById } from "@/app/actions/users";
@@ -16,11 +17,21 @@ export interface UseAuthReturn {
 export function useAuth(): UseAuthReturn {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
   const supabase = createClient();
 
   const handleLogin = async (email: string, password: string) => {
     try {
       await login(email, password);
+
+      const { data } = await supabase.auth.getClaims();
+      const userRole = data?.claims.user_role;
+
+      if (userRole === "Admin") {
+        router.push("/admin");
+      } else {
+        router.push("/property");
+      }
     } catch (error) {
       console.error("Login failed:", error);
       throw error;

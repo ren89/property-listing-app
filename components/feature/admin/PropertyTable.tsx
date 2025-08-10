@@ -4,7 +4,6 @@ import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown, Banknote, Plus } from "lucide-react";
 
-import Button from "@/components/shared/Button";
 import { DataTable } from "@/components/shared/DataTable";
 import {
   Popover,
@@ -12,13 +11,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Slider } from "@/components/ui/slider";
-import Input from "@/components/shared/Input";
 import Select from "@/components/shared/Select";
 import {
   PropertyListing,
   PropertyStatus,
   PropertyType,
 } from "@/types/property";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface PropertyTableProps {
   columns: ColumnDef<PropertyListing>[];
