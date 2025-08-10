@@ -151,7 +151,6 @@ export function PropertyTable({
   return (
     <div className="w-full space-y-4">
       <div className="flex flex-col lg:flex-row gap-4 lg:items-end">
-        {/* Search Input */}
         <div className="w-full lg:flex-1 lg:max-w-sm">
           <Input
             placeholder={searchPlaceholder}
@@ -263,10 +262,12 @@ export function PropertyTable({
             </div>
           </div>
 
-          {/* Clear Filters Button - Part of the filter row 
-          Removed for simplicity, can be added back if needed
+          {/* 
+            Clear Filters Button - Part of the filter row 
+            Removed for simplicity, can be added back if needed
           */}
-          {/* {hasActiveFilters && (
+          {/* 
+          {hasActiveFilters && (
             <div className="w-full sm:w-auto">
               <div className="space-y-2">
                 <label className="text-sm font-medium invisible">Action</label>
