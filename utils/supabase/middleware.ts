@@ -52,6 +52,13 @@ export async function updateSession(request: NextRequest) {
     "/admin": ["Admin"],
   };
 
+  // If user is authenticated and trying to access homepage, redirect to /property
+  if (user && pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/property";
+    return NextResponse.redirect(url);
+  }
+
   // Check if current path needs authentication
   const currentRoute =
     Object.keys(routeAccess).find(

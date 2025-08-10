@@ -22,8 +22,18 @@ export default function Input({
   const displayLabel =
     label || (name ? name.charAt(0).toUpperCase() + name.slice(1) : "");
 
+  // Extract flex classes from className for wrapper
+  const flexClasses = className?.split(' ').filter(cls => 
+    cls.startsWith('flex-') || cls === 'flex' || cls.startsWith('grow') || cls.startsWith('shrink')
+  ).join(' ') || '';
+  
+  // Remove flex classes from input className to avoid duplication
+  const inputClassName = className?.split(' ').filter(cls => 
+    !cls.startsWith('flex-') && cls !== 'flex' && !cls.startsWith('grow') && !cls.startsWith('shrink')
+  ).join(' ') || '';
+
   return (
-    <div className="space-y-2">
+    <div className={`space-y-2 ${flexClasses}`}>
       {displayLabel && (
         <Label htmlFor={name} className="text-sm font-medium">
           {displayLabel}
@@ -52,7 +62,7 @@ export default function Input({
             error
               ? "border-red-500 focus:ring-red-500 focus:border-red-500"
               : "border-gray-300",
-            className,
+            inputClassName,
           ]
             .filter(Boolean)
             .join(" ")}

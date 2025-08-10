@@ -7,6 +7,7 @@ import type { User } from "@supabase/supabase-js";
 
 export interface UseAuthReturn {
   user: User | null;
+  userRole: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
@@ -16,6 +17,7 @@ export interface UseAuthReturn {
 
 export function useAuth(): UseAuthReturn {
   const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
@@ -66,6 +68,20 @@ export function useAuth(): UseAuthReturn {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
+      
+      // Get user role from claims if user is authenticated
+      if (user) {
+        try {
+          const { data } = await supabase.auth.getClaims();
+          setUserRole(data?.claims.user_role || null);
+        } catch (error) {
+          console.error("Failed to get user claims:", error);
+          setUserRole(null);
+        }
+      } else {
+        setUserRole(null);
+      }
+      
       setLoading(false);
     };
 
@@ -95,6 +111,20 @@ export function useAuth(): UseAuthReturn {
       }
 
       setUser(session?.user ?? null);
+      
+      // Get user role from claims when auth state changes
+      if (session?.user) {
+        try {
+          const { data } = await supabase.auth.getClaims();
+          setUserRole(data?.claims.user_role || null);
+        } catch (error) {
+          console.error("Failed to get user claims:", error);
+          setUserRole(null);
+        }
+      } else {
+        setUserRole(null);
+      }
+      
       setLoading(false);
     });
 
@@ -104,6 +134,7 @@ export function useAuth(): UseAuthReturn {
 
   return {
     user,
+    userRole,
     loading,
     login: handleLogin,
     signup: handleSignup,

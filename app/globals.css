@@ -120,3 +120,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Prevent hover effects on touch devices to avoid flickering */
+  @media (hover: none) {
+    .hover\:scale-105:hover {
+      transform: none !important;
+    }
+  }
+}

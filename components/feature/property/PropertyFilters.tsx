@@ -1,9 +1,12 @@
 "use client";
 
-import React from "react";
-import { PropertyType, PropertyStatus } from "@/types/property";
-import { Select, Input, Button } from "@/components/shared";
+import React, { useMemo, useEffect, useState } from "react";
+import { PropertyType, PropertyStatus, PropertyListing } from "@/types/property";
+import { Select, Input } from "@/components/shared";
 import { Search, Filter, X } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { formatPriceCompact } from "@/utils/formatters";
+import { Button } from "@/components/ui/button";
 
 interface PropertyFiltersProps {
   onFilterChange: (filters: {
@@ -20,11 +23,13 @@ interface PropertyFiltersProps {
     minPrice: string;
     maxPrice: string;
   };
+  properties?: PropertyListing[];
 }
 
 export function PropertyFilters({
   onFilterChange,
   filters,
+  properties = [],
 }: PropertyFiltersProps) {
   // TODO: Improve filter ui in mobile view
   const handleFilterChange = (key: string, value: string) => {
@@ -32,6 +37,44 @@ export function PropertyFilters({
       ...filters,
       [key]: value,
     });
+  };
+
+
+
+  const priceRange = useMemo(() => {
+    if (properties.length === 0) {
+      return { min: 0, max: 1000000 };
+    }
+    
+    const prices = properties.map(p => p.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    // Add some padding to the range for better UX, but don't let min go below the actual minimum
+    const padding = (maxPrice - minPrice) * 0.1;
+    const range = {
+      min: Math.floor(Math.max(minPrice * 0.9, minPrice - padding)), // Keep it close to actual min
+      max: Math.ceil(maxPrice + padding)
+    };
+    return range;
+  }, [properties]);
+
+  // Local state for slider values
+  const [sliderValues, setSliderValues] = useState<[number, number]>([priceRange.min, priceRange.max]);
+
+  // Sync local state with parent filters
+  useEffect(() => {
+    const minValue = filters.minPrice && filters.minPrice !== "" ? parseInt(filters.minPrice) : priceRange.min;
+    const maxValue = filters.maxPrice && filters.maxPrice !== "" ? parseInt(filters.maxPrice) : priceRange.max;
+    setSliderValues([minValue, maxValue]);
+  }, [filters.minPrice, filters.maxPrice, priceRange.min, priceRange.max]);
+
+  // Handle slider changes
+  const handleSliderChange = (values: number[]) => {
+    const [min, max] = values;
+    setSliderValues([min, max]);
+    handleFilterChange("maxPrice", max.toString());
+    handleFilterChange("minPrice", min.toString());
   };
 
   const clearFilters = () => {
@@ -53,7 +96,7 @@ export function PropertyFilters({
 
   return (
     <div className="space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border w-full">
-      <div className="w-full">
+      <div className="w-full hidden md:block">
         <Input
           name="search"
           type="text"
@@ -62,6 +105,7 @@ export function PropertyFilters({
           onChange={(e) => handleFilterChange("search", e.target.value)}
           leftIcon={<Search className="w-4 h-4" />}
           label=""
+          className="rounded-full py-2 flex-1"
         />
       </div>
 
@@ -115,25 +159,31 @@ export function PropertyFilters({
           ]}
         />
 
-        <Input
-          name="minPrice"
-          label="Min Price"
-          type="number"
-          placeholder="0"
-          value={filters.minPrice}
-          onChange={(e) => handleFilterChange("minPrice", e.target.value)}
-          className="w-full"
-        />
-
-        <Input
-          name="maxPrice"
-          label="Max Price"
-          type="number"
-          placeholder="Any"
-          value={filters.maxPrice}
-          onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
-          className="w-full"
-        />
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ">
+            Price Range
+          </label>
+          
+          <div className="px-2 mt-2">
+            <Slider
+              value={sliderValues}
+              onValueChange={handleSliderChange}
+              min={priceRange.min}
+              max={priceRange.max}
+              step={Math.max(1000, Math.floor((priceRange.max - priceRange.min) / 100))}
+              className="w-full"
+            />
+          </div>
+          
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+            <span>
+              Min: {formatPriceCompact(sliderValues[0])}
+            </span>
+            <span>
+              Max: {formatPriceCompact(sliderValues[1])}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

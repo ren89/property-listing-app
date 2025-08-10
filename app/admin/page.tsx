@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePropertyListings } from "@/hooks/usePropertyListings";
+import { useAuth, useNavigation } from "@/hooks";
 import {
   PropertyListing,
   PropertyType,
@@ -17,8 +18,11 @@ import { PropertyModal, AdminPropertyTable } from "@/components/feature/admin";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { NavigationDrawer } from "@/components/shared";
 
 export default function AdminPage() {
+  const { userRole } = useAuth();
+  const { navigationItems } = useNavigation(userRole);
   const {
     properties,
     loading,
@@ -192,8 +196,14 @@ export default function AdminPage() {
     resetForm();
   };
 
+
   return (
+
     <div className="p-6 max-w-7xl mx-auto">
+      <NavigationDrawer
+        items={navigationItems}
+        title="Main Menu"
+      />
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <div>

@@ -8,12 +8,9 @@ import { useAuth } from "@/hooks";
 import SignupForm from "@/components/feature/auth/SignupForm";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
-  const { user, loading, login, signup, logout, isAuthenticated } = useAuth();
+  const {  login, signup,  } = useAuth();
 
-  const handleLoginClick = () => setAuthMode("login");
-  const handleSignUpClick = () => setAuthMode("signup");
 
   const handleLoginSubmit = async (email: string, password: string) => {
     try {

@@ -22,7 +22,7 @@ interface CustomSheetProps {
 export default function Sheet({
   buttonText = "Open",
   side = "bottom",
-  buttonClassName = "bg-primary text-white px-6 py-3 rounded-lg shadow-lg mb-4",
+  buttonClassName,
   sheetClassName = "p-6 max-w-md mx-auto",
   title,
   description,

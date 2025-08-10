@@ -27,7 +27,7 @@ export default function Button({
       size={size}
       disabled={disabled || loading}
       {...props}
-      className={`${props.className ?? ""} rounded-full  py-8 w-full `}
+      className={`rounded-full py-8 ${props.className?.includes('w-') ? '' : 'w-full'} ${props.className ?? ""}`}
     >
       {loading && <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />}
       {loading ? loadingText : children}

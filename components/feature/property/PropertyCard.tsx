@@ -37,6 +37,8 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           alt={property.title}
           aspectRatio={4 / 3}
           fallbackIcon={<Home className="w-12 h-12 text-gray-400" />}
+          showNavigation={false}
+          hoverEffect={false}
         />
 
         <StatusBadge
@@ -50,30 +52,30 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           className="absolute top-3 right-3 z-10"
         />
       </div>
-      <div className="p-4 space-y-3">
+      <div className="px-4 space-y-3">
         <h3 className="font-semibold text-lg text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
           {property.title}
         </h3>
 
-        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-          <MapPin className="w-4 h-4 flex-shrink-0" />
-          <span className="text-sm truncate">{property.location}</span>
-        </div>
-
-        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <div className="flex items-center gap-2">
-            {getTypeIcon(property.property_type)}
-            <span className="capitalize">{property.property_type}</span>
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <MapPin className="w-4 h-4 flex-shrink-0" />
+            <span className="text-sm truncate">{property.location}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            <span>{formatDate(property.created_at)}</span>
-          </div>
-        </div>
 
-        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
+          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2">
+              {getTypeIcon(property.property_type)}
+              <span className="capitalize">{property.property_type}</span>
+            </div>
+            {/* <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>{formatDate(property.created_at)}</span>
+            </div> */}
+          </div>
+
+        {/* <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
           {property.description}
-        </p>
+        </p> */}
       </div>
     </Card>
   );

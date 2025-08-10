@@ -13,3 +13,4 @@ export { default as StatusBadge } from "./StatusBadge";
 export { default as ImageCarousel } from "./ImageCarousel";
 export { default as ImageUpload } from "./ImageUpload";
 export { ConfirmDialog } from "./ConfirmDialog";
+export { default as NavigationDrawer } from "./NavigationDrawer";
