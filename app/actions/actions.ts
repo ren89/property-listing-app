@@ -38,7 +38,7 @@ export async function signup(name: string, email: string, password: string) {
     throw new Error(error.message || "Signup failed");
   }
 
-  // Profile creation will happen in useAuth hook after successful authentication
+  // User creation in table will happen in useAuth hook after successful authentication
 
   revalidatePath("/", "layout");
   return { success: true };

@@ -56,25 +56,33 @@ export function PropertyCard({ property, onClick }: PropertyCardProps) {
           {property.title}
         </h3>
 
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <MapPin className="w-4 h-4 flex-shrink-0" />
-            <span className="text-sm truncate">{property.location}</span>
-          </div>
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <MapPin className="w-4 h-4 flex-shrink-0" />
+          <span className="text-sm truncate">{property.location}</span>
+        </div>
 
-          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-2">
+            {getTypeIcon(property.property_type)}
+            <span className="capitalize">{property.property_type}</span>
+          </div>
+          {/* 
+            UI feels cluttered with date, so commented out
+            Uncomment if needed
             <div className="flex items-center gap-2">
-              {getTypeIcon(property.property_type)}
-              <span className="capitalize">{property.property_type}</span>
-            </div>
-            {/* <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>{formatDate(property.created_at)}</span>
-            </div> */}
-          </div>
+            </div> 
+            */}
+        </div>
 
-        {/* <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
+        {/*
+        move description to a sheet for better UX
+        bring back is a good idea
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
           {property.description}
-        </p> */}
+        </p>
+         */}
       </div>
     </Card>
   );

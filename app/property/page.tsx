@@ -43,7 +43,8 @@ export default function PropertyPage() {
     maxPrice: "",
   });
 
-  const [selectedProperty, setSelectedProperty] = useState<PropertyListing | null>(null);
+  const [selectedProperty, setSelectedProperty] =
+    useState<PropertyListing | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const filteredProperties = useMemo(() => {
@@ -140,10 +141,7 @@ export default function PropertyPage() {
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Filters Sidebar */}
-          <div
-            className={`lg:w-80 lg:flex-shrink-0 hidden lg:block`}
-          >
+          <div className={`lg:w-80 lg:flex-shrink-0 hidden lg:block`}>
             <div className="sticky top-8">
               <PropertyFilters
                 filters={filters}
@@ -153,7 +151,6 @@ export default function PropertyPage() {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="flex-1 min-w-0">
             {loading ? (
               <PropertyGridSkeleton />
@@ -184,7 +181,6 @@ export default function PropertyPage() {
         </div>
       </div>
 
-      {/* Property Details Sheet */}
       <PropertyDetailsSheet
         property={selectedProperty}
         isOpen={isSheetOpen}

@@ -95,7 +95,6 @@ export async function deletePropertyListing(
       .eq("id", id)
       .single();
 
-    // Delete the property record
     const { error } = await supabase
       .from("property_listings")
       .delete()
@@ -153,7 +152,6 @@ export async function uploadPropertyImages(
         throw error;
       }
 
-      // Get public URL
       const {
         data: { publicUrl },
       } = supabase.storage.from("pla-prod").getPublicUrl(filePath);

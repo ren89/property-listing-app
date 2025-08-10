@@ -9,8 +9,7 @@ import SignupForm from "@/components/feature/auth/SignupForm";
 
 export default function Home() {
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
-  const {  login, signup,  } = useAuth();
-
+  const { login, signup } = useAuth();
 
   const handleLoginSubmit = async (email: string, password: string) => {
     try {
@@ -35,7 +34,6 @@ export default function Home() {
   };
   return (
     <div className="min-h-screen flex flex-col ">
-      {/* Background image for mobile */}
       <div className=" -z-10">
         <Image
           src="/loginbg.png"
@@ -46,14 +44,12 @@ export default function Home() {
         />
       </div>
 
-      {/* Header / Title */}
       <div className="flex flex-col items-center justify-center flex-grow px-4 py-8 max-w-md mx-auto w-full">
         <h1 className="text-3xl font-bold mb-8 text-white drop-shadow md:text-black">
           Property Listing App
         </h1>
       </div>
 
-      {/* Bottom sheet area */}
       <div className="flex flex-col items-center w-full px-4 pb-4 gap-4 max-w-md mx-auto">
         <Sheet
           buttonText="Get Started"

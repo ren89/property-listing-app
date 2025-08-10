@@ -3,10 +3,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function DataTableSkeleton() {
   return (
     <div className="space-y-4">
-      {/* Search bar skeleton */}
       <Skeleton className="h-10 w-80" />
-      
-      {/* Table header skeleton */}
+
       <div className="border rounded-lg">
         <div className="border-b p-4">
           <div className="flex space-x-4">
@@ -18,8 +16,7 @@ export function DataTableSkeleton() {
             <Skeleton className="h-4 w-16" />
           </div>
         </div>
-        
-        {/* Table rows skeleton */}
+
         {Array.from({ length: 5 }).map((_, index) => (
           <div key={index} className="border-b last:border-b-0 p-4">
             <div className="flex space-x-4 items-center">
